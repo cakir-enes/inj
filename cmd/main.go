@@ -1,47 +1,42 @@
 package main
 
 import (
-	"fmt"
 	_ "gogui/injector"
-	"time"
+	"gogui/params"
+	"io/ioutil"
+	"log"
 
 	_ "google.golang.org/grpc"
+	"gopkg.in/yaml.v2"
 )
 
-func fibonacci(quit <-chan int) <-chan int {
-	c := make(chan int)
-	x, y := 0, 1
-	go func() {
-		for {
-			select {
-			case c <- x:
-				x, y = y, x+y
-			case <-quit:
-				fmt.Println("quit")
-				return
-			default:
-				fmt.Println("sel2")
-			}
-			fmt.Println("sel")
+func main() {
+	var cfg Config
+	cfgFile, err := ioutil.ReadFile("/home/ecakir/Projects/gogui/gogui/cmd/conf.yaml")
+	if err != nil {
+		log.Panicf("ErrCantReadCfg: %s\n", err.Error())
+	}
+	err = yaml.Unmarshal(cfgFile, &cfg)
+	if err != nil {
+		log.Panicf("ErrCantParseCfg: %s\n", err.Error())
+	}
+	mods := params.NewModules()
+	for _, m := range cfg.Mods {
+		acc, err := params.New(m.Address, m.Name)
+		if err != nil {
+			log.Printf("ErrCantConnect to %s -> %s\n", m.Name, err.Error())
+			break
 		}
-	}()
-	return c
+		mods.AddModule(m.Name, acc)
+		defer acc.Close()
+	}
+	log.Println(mods.GetAllParamInfo())
+
 }
 
-func main() {
-
-	quit := make(chan int)
-	_ = fibonacci(quit)
-	time.Sleep(3 * time.Second)
-	quit <- 1
-	time.Sleep(2 * time.Second)
-	// conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
-	// // handle err
-	// defer conn.Close()
-	// client := injector.NewInjectorClient(conn)
-	// resp, err := client.GetAllEnumValues()
-
-	// u, err := client.GetUser(context.Background(), &user.Empty{})
-	// handle err
-	// fmt.Printf("Name: %s", a)
+type Config struct {
+	Mods []struct {
+		Name    string `yaml:"name"`
+		Address string `yaml:"address"`
+	} `yaml:"modules"`
 }

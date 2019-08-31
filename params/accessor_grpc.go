@@ -28,6 +28,8 @@ func New(address string, name string) (*GrpcAccessor, error) {
 	client := pb.NewInjectorClient(conn)
 	return &GrpcAccessor{address, name, client, conn}, nil
 }
+
+// Close connection channel.
 func (acc *GrpcAccessor) Close() {
 	acc.conn.Close()
 }

@@ -6,4 +6,5 @@ require (
 	github.com/wailsapp/wails v0.17.0
 	golang.org/x/tools/gopls v0.1.3 // indirect
 	google.golang.org/grpc v1.23.0
+	gopkg.in/yaml.v2 v2.2.2
 )
