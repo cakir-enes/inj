@@ -11,6 +11,10 @@ type Modules struct {
 	mods map[string]Accessor
 }
 
+func NewModules() Modules {
+	return Modules{mods: make(map[string]Accessor)}
+}
+
 func (m *Modules) AddModule(name string, acc Accessor) {
 	m.mods[name] = acc
 }
@@ -50,8 +54,8 @@ func (m *Modules) MultiSet(params map[string]map[string]string) error {
 	return nil
 }
 
-func (m *Modules) GetAllParamInfo() map[string]*[]ParamInfo {
-	params := make(map[string]*[]ParamInfo)
+func (m *Modules) GetAllParamInfo() map[string][]ParamInfo {
+	params := make(map[string][]ParamInfo)
 	for mod, acc := range m.mods {
 		pInfos, err := acc.GetAllParamInfo()
 		if err != nil {

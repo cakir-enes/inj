@@ -15,6 +15,7 @@ type GrpcAccessor struct {
 	name    string
 	address string
 	client  pb.InjectorClient
+	conn    *grpc.ClientConn
 }
 
 // New returns grpc acc. connected to given addr "localhost:6060", err if can't connect
@@ -23,9 +24,12 @@ func New(address string, name string) (*GrpcAccessor, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
+
 	client := pb.NewInjectorClient(conn)
-	return &GrpcAccessor{address, name, client}, nil
+	return &GrpcAccessor{address, name, client, conn}, nil
+}
+func (acc *GrpcAccessor) Close() {
+	acc.conn.Close()
 }
 
 // Name returns connected module identifier

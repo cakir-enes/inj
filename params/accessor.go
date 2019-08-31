@@ -8,8 +8,8 @@ import (
 type Accessor interface {
 	Name() string
 	Get(paramName string) (string, error)
-	MultiGet(ctx context.Context, paramNames []string) (<-chan []*pb.PathAndValue, error)
+	MultiGet(ctx context.Context, paramNames []string) (<-chan []*pb.PathAndValue, <-chan error)
 	MultiSet(params map[string]string) error
-	GetAllParamInfo() (*[]ParamInfo, error)
+	GetAllParamInfo() ([]ParamInfo, error)
 	GetAllPossibleEnums() (map[string][]string, error)
 }
