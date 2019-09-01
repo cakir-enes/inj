@@ -2,6 +2,7 @@ package params
 
 import (
 	"context"
+	"encoding/json"
 	pb "gogui/injector"
 	"log"
 	"strings"
@@ -42,6 +43,15 @@ func (m *Modules) MultiGet(ctx context.Context, modToPaths map[string][]string) 
 		}()
 	}
 	return newValsStream
+}
+
+func (m *Modules) Print(p string) {
+	req := make(map[string]map[string]string)
+	json.Unmarshal([]byte(p), &req)
+	// for k, v := range p {
+	// 	req[k] = v.(map[string]interface{})
+	// }
+	log.Println(req)
 }
 
 func (m *Modules) MultiSet(params map[string]map[string]string) error {

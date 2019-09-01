@@ -24,7 +24,6 @@ func New(address string, name string) (*GrpcAccessor, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	client := pb.NewInjectorClient(conn)
 	return &GrpcAccessor{address, name, client, conn}, nil
 }

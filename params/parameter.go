@@ -10,7 +10,7 @@ package params
 // )
 
 type ParamInfo struct {
-	Name  string
-	Value string
-	Type  string
+	Name  string `json:"name"`
+	Value string `json:"value"`
+	Type  string `json:"type"`
 }
