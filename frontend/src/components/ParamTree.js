@@ -3,9 +3,10 @@ import { Tree } from "antd";
 
 const { TreeNode } = Tree;
 
-function insert(node, path, parent) {
+function insert(node, path) {
   const pathParts = path.split(".");
   let current = node;
+
   pathParts.reduce((pre, curr) => {
     let children = current.children || [];
     let alreadyExists = false;

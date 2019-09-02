@@ -5,6 +5,11 @@ let a = {
   showModal: true
 };
 
+export interface Parameter {
+  name: string;
+  value: string;
+}
+
 const HelloWorld: React.FC = () => {
   // const [showModal, setShowModal] = useState(false)
   const [a, setA] = useState(1);

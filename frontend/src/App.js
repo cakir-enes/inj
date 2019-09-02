@@ -8,6 +8,7 @@ import ParamTree from "./components/ParamTree";
 import useParameters from "./hooks";
 import Sider from "antd/lib/layout/Sider";
 import SiderDemo, { PAGE } from "./components/SideMenu";
+import ParamMonitor from "./components/ParamMonitor";
 
 // function useParameters() {
 //   let [params, setParams] = useState([]);
@@ -41,7 +42,7 @@ function App() {
   let renderActivePage = p => {
     switch (p) {
       case PAGE.MONITOR:
-        return <h3>HELHELELO</h3>;
+        return <ParamMonitor params={paramApi.checkedParams} />;
       case PAGE.SELECT:
         return (
           <ParamTree
